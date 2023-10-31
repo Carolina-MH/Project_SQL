@@ -55,19 +55,19 @@ He llevado a cabo consultas y análisis de datos para obtener información valio
 
 💡Obtener la cantidad total de películas en cada categoría, ordenadas en orden DESC:
 
-![Query1](https://github.com/Carolina-MH/Proyecto-1/blob/main/img/cantidad_total_de_películas_en_cada_categoría.png)
+![Query1](https://github.com/Carolina-MH/Project_SQL/blob/main/img/cantidad_total_de_películas_en_cada_categoría.png)
 
 💡Encontrar los 10 actores que aparecen en la mayoría de las películas:
 
-![Query2](https://github.com/Carolina-MH/Proyecto-1/blob/main/img/10_actores_que_aparecen_en_la_mayoría_de_las_películas.png)
+![Query2](https://github.com/Carolina-MH/Project_SQL/blob/main/img/10_actores_que_aparecen_en_la_mayoría_de_las_películas.png)
 
 💡Nombre de las películas que no han sido alquiladas:
 
-![Query3](https://github.com/Carolina-MH/Proyecto-1/blob/main/img/Nombre_de_las_películas_que_no_han_sido_alquiladas.png)
+![Query3](https://github.com/Carolina-MH/Project_SQL/blob/main/img/Nombre_de_las_películas_que_no_han_sido_alquiladas.png)
 
 
 # Conclusión
 
 Todas estas actividades de exploración, limpieza y análisis de datos son esenciales para respaldar los objetivos de "Cineflix Rentals" en la gestión eficiente de películas y clientes, la toma de decisiones informadas, el seguimiento de transacciones y la gestión del personal.
 
-![GIFT](https://github.com/Carolina-MH/Proyecto-1/blob/main/img/gif_final.png)
+![GIFT](https://github.com/Carolina-MH/Project_SQL/blob/main/img/gif_final.gif)
