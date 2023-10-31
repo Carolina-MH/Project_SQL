@@ -1,6 +1,8 @@
 # CINEFLIX RENTALS [SQL]
 
-![encabezado](https://github.com/Carolina-MH/Project_SQL/raw/main/img/encabezado.png)
+![encabezado](https://github.com/Carolina-MH/Project_SQL/blob/main/img/encabezado.png)
+
+
 
 
 # Historia de negocio
