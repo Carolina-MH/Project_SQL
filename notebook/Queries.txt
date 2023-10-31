@@ -1,0 +1,263 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema cineflix
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema cineflix
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `cineflix` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `cineflix` ;
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`actor_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`actor_` (
+  `actor_id` INT NOT NULL,
+  `first_name` TEXT NULL DEFAULT NULL,
+  `last_name` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`actor_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`category_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`category_` (
+  `category_id` INT NOT NULL,
+  `name` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`category_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`customer_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`customer_` (
+  `customer_id` INT NOT NULL,
+  `first_name` TEXT NULL DEFAULT NULL,
+  `last_name` TEXT NULL DEFAULT NULL,
+  `email` TEXT NULL DEFAULT NULL,
+  `phone` TEXT NULL DEFAULT NULL,
+  `address` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`customer_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`language_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`language_` (
+  `language_id` INT NOT NULL,
+  `name` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`language_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`film_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`film_` (
+  `film_id` INT NOT NULL,
+  `title` TEXT NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `release_year` INT NULL DEFAULT NULL,
+  `language_id` INT NOT NULL,
+  `rental_duration` INT NULL DEFAULT NULL,
+  `rental_rate` DOUBLE NULL DEFAULT NULL,
+  `length` INT NULL DEFAULT NULL,
+  `replacement_cost` DOUBLE NULL DEFAULT NULL,
+  `rating` TEXT NULL DEFAULT NULL,
+  `special_features` TEXT NULL DEFAULT NULL,
+  `category_id` INT NOT NULL,
+  PRIMARY KEY (`film_id`, `category_id`, `language_id`),
+  INDEX `category_id_idx` (`category_id` ASC) VISIBLE,
+  INDEX `language_id_idx` (`language_id` ASC) VISIBLE,
+  CONSTRAINT `category_id`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `cineflix`.`category_` (`category_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `language_id`
+    FOREIGN KEY (`language_id`)
+    REFERENCES `cineflix`.`language_` (`language_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`film_actor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`film_actor` (
+  `actor_id` INT NOT NULL,
+  `film_id` INT NOT NULL,
+  INDEX `film_id_idx` (`film_id` ASC) VISIBLE,
+  INDEX `actor_id_idx` (`actor_id` ASC) VISIBLE,
+  PRIMARY KEY (`actor_id`, `film_id`),
+  CONSTRAINT `actor_id`
+    FOREIGN KEY (`actor_id`)
+    REFERENCES `cineflix`.`actor_` (`actor_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `film_id`
+    FOREIGN KEY (`film_id`)
+    REFERENCES `cineflix`.`film_` (`film_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`inventory_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`inventory_` (
+  `inventory_id` INT NOT NULL,
+  `film_id` INT NULL,
+  `store_id` INT NULL DEFAULT NULL,
+  `film__film_id` INT NOT NULL,
+  PRIMARY KEY (`inventory_id`, `film__film_id`),
+  INDEX `fk_inventory__film_1_idx` (`film__film_id` ASC) VISIBLE,
+  CONSTRAINT `fk_inventory__film_1`
+    FOREIGN KEY (`film__film_id`)
+    REFERENCES `cineflix`.`film_` (`film_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`staff_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`staff_` (
+  `staff_id` INT NOT NULL,
+  `first_name` TEXT NULL DEFAULT NULL,
+  `last_name` TEXT NULL DEFAULT NULL,
+  `email` TEXT NULL DEFAULT NULL,
+  `phone` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`staff_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `cineflix`.`rental_`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cineflix`.`rental_` (
+  `rental_id` INT NOT NULL,
+  `rental_date` TEXT NULL DEFAULT NULL,
+  `inventory_id` INT NOT NULL,
+  `customer_id` INT NOT NULL,
+  `return_date` TEXT NULL DEFAULT NULL,
+  `staff_id` INT NOT NULL,
+  `rental_year` INT NULL DEFAULT NULL,
+  `rental_date_only` TEXT NULL DEFAULT NULL,
+  `return_year` INT NULL DEFAULT NULL,
+  `return_date_only` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`rental_id`, `inventory_id`, `customer_id`, `staff_id`),
+  INDEX `inventory_id_idx` (`inventory_id` ASC) VISIBLE,
+  INDEX `customer_id_idx` (`customer_id` ASC) VISIBLE,
+  INDEX `staff_id_idx` (`staff_id` ASC) VISIBLE,
+  CONSTRAINT `inventory_id`
+    FOREIGN KEY (`inventory_id`)
+    REFERENCES `cineflix`.`inventory_` (`inventory_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `customer_id`
+    FOREIGN KEY (`customer_id`)
+    REFERENCES `cineflix`.`customer_` (`customer_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `staff_id`
+    FOREIGN KEY (`staff_id`)
+    REFERENCES `cineflix`.`staff_` (`staff_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+
+
+
+QUERIES
+-- QUERY 1 -> Obtener la cantidad total de películas en cada categoría, ordenadas en orden DESC
+SELECT 
+    c.name AS category, 
+    COUNT(f.category_id) AS total_films
+FROM
+    category_ c
+        LEFT JOIN
+    film_ f ON c.category_id = f.category_id
+GROUP BY c.name
+ORDER BY total_films DESC;
+
+-- QUERY 2 -> Encontrar los 10 actores que aparecen en la mayoría de las películas.
+
+SELECT 
+    a.first_name, a.last_name, 
+    COUNT(fa.actor_id) AS film_count
+FROM
+    actor_ a
+        JOIN
+    film_actor fa ON a.actor_id = fa.actor_id
+GROUP BY a.actor_id
+ORDER BY film_count DESC
+LIMIT 10;
+
+-- QUERY 3 ->  Películas que pertezcan a la categoria 'Action'
+
+SELECT f.title
+FROM film_ f
+INNER JOIN category_ c 
+ON f.category_id = c.category_id
+WHERE c.name = 'Action';
+
+-- QUERY 4 -> Nombre de las películas que no han sido alquiladas
+
+SELECT 
+    f.title
+FROM
+    film_ f
+        LEFT JOIN
+    inventory_ i ON f.film_id = i.film__film_id
+WHERE
+    i.inventory_id IS NULL;
+
+-- QUERY 5 -> Mostrar todos los actores que han actuado en la película 'Affair prejudice'
+
+SELECT a.first_name, a.last_name
+FROM actor_ a
+JOIN film_actor fa ON a.actor_id = fa.actor_id
+JOIN film_ F ON fa.film_id = f.film_id
+WHERE f.title = 'Affair prejudice';
